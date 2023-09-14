@@ -2,6 +2,8 @@
 @description('Name of the Service Bus namespace')
 param serviceBusNamespaceName string = 'serviceBusNamespace5485'
 param diagnosticSettingsName string = 'diagnosticSettings5656'
+param DefenderforSBName string = 'DefenderforSB'
+
 @description('The messaging tier for service Bus namespace')
 @allowed([
   'Basic'
@@ -65,6 +67,16 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
   }
 }
 // END SB Resource
+
+//BEGIN Defender for SB
+resource symbolicname 'Microsoft.Security/advancedThreatProtectionSettings@2019-01-01' = {
+  name: DefenderforSBName
+  scope: serviceBusNamespace
+  properties: {
+    isEnabled: true
+  }
+}
+//END Defender for SB
 
 // BEGIN DS Resource
 resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
