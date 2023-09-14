@@ -1,0 +1,28 @@
+on: [push]
+
+name: Azure ARM
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+      # Run the deployment script
+    - name: Run deployment script
+      run: ./deploy.sh
+      env:
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
+        AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RG }}
+
+
+
+
+

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "2331659482537500970"
+    }
+  },
+  "parameters": {
+    "servicebus_sku": {
+      "type": "string",
+      "defaultValue": "Premium",
+      "allowedValues": [
+        "Standard",
+        "Premium"
+      ]
+    },
+    "servicebus_name": {
+      "type": "string",
+      "defaultValue": "servicebuspilot"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "diagnosticSettings_name": {
+      "type": "string",
+      "defaultValue": "sb_diagnosticSettings_pazabal"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2022-10-01-preview",
+      "name": "[parameters('servicebus_name')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "tagName1": "servicebuspilot",
+        "tagName2": "servicebuspilot"
+      },
+      "sku": {
+        "name": "[parameters('servicebus_sku')]",
+        "tier": "[parameters('servicebus_sku')]"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "minimumTlsVersion": "1.2",
+        "publicNetworkAccess": "Disabled",
+        "zoneRedundant": true
+      }
+    },
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "name": "[parameters('diagnosticSettings_name')]",
+      "properties": {
+        "logs": [
+          {
+            "categoryGroup": "allLogs",
+            "enabled": true,
+            "retentionPolicy": {
+              "days": 0,
+              "enabled": false
+            }
+          },
+          {
+            "categoryGroup": "audit",
+            "enabled": false,
+            "retentionPolicy": {
+              "days": 0,
+              "enabled": false
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true,
+            "retentionPolicy": {
+              "days": 0,
+              "enabled": false
+            }
+          }
+        ],
+        "storageAccountId": "/subscriptions/04ba7c19-c901-47f0-97c2-951d1263ed73/resourceGroups/vm_group/providers/Microsoft.Storage/storageAccounts/saservicebus"
+      }
+    }
+  ]
+}
