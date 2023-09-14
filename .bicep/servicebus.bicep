@@ -14,7 +14,7 @@ param DefenderforSBName string = 'DefenderforSB'
 param servicebus_sku string = 'Premium' // Default SKU here
 
 @description('Set the premium partitions count as needed')
-param servicebus_premiumMessagingPartitions int = 1 
+param servicebus_premiumMessagingPartitions int = 1
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -30,8 +30,8 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
     tier: servicebus_sku
   }
   identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {} // Service Principal selected for encryption
+    type: 'SystemAssigned'
+    // userAssignedIdentities: {} // Service Principal selected for encryption
   }
   properties: {
     encryption: {
@@ -73,7 +73,7 @@ resource symbolicname 'Microsoft.Security/advancedThreatProtectionSettings@2019-
   name: DefenderforSBName
   scope: serviceBusNamespace
   properties: {
-    isEnabled: true
+    isEnabled: true // from: https://learn.microsoft.com/en-us/azure/templates/microsoft.security/advancedthreatprotectionsettings?pivots=deployment-language-bicep
   }
 }
 //END Defender for SB
